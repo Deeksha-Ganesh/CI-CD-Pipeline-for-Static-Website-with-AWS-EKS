@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_USERNAME = "deekshaganesh"           // your Docker Hub username
-        DOCKER_PASSWORD = "your-docker-password-or-PAT" // your Docker Hub password or PAT
+        DOCKER_PASSWORD = "Deeksha@18" // your Docker Hub password or PAT
         DOCKER_IMAGE_NAME = "deekshaganesh/static-web-app"
         KUBECONFIG = "/var/lib/jenkins/.kube/config"
     }
