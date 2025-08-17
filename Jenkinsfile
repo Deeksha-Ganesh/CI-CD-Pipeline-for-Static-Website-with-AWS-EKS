@@ -2,8 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USERNAME = "deekshaganesh"           // your Docker Hub username
-        DOCKER_PASSWORD = "Deeksha@18" // your Docker Hub password or PAT
         DOCKER_IMAGE_NAME = "deekshaganesh/static-web-app"
         KUBECONFIG = "/var/lib/jenkins/.kube/config"
     }
@@ -15,28 +13,33 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build & Push Docker Image') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE_NAME}:latest ."
+                script {
+                    def IMAGE_TAG = "${env.BUILD_NUMBER}"   // unique tag = Jenkins build number
+
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh "docker build -t ${DOCKER_IMAGE_NAME}:${IMAGE_TAG} ."
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                        sh "docker push ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}"
+                    }
+
+                    // save IMAGE_TAG for next stage
+                    env.IMAGE_TAG = IMAGE_TAG
+                }
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('Deploy to Kubernetes') {
             steps {
-                sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-            }
-        }
+                script {
+                    // replace image in deployment.yaml with new tag
+                    sh "sed -i 's|image: ${DOCKER_IMAGE_NAME}:.*|image: ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}|' deployment.yaml"
 
-        stage('Push Image') {
-            steps {
-                sh "docker push ${DOCKER_IMAGE_NAME}:latest"
-            }
-        }
-
-        stage('Deployment in Kubernetes') {
-            steps {
-                sh 'kubectl apply -f deployment.yaml'
-                sh 'kubectl apply -f service.yaml'
+                    // apply manifests
+                    sh 'kubectl apply -f deployment.yaml'
+                    sh 'kubectl apply -f service.yaml'
+                }
             }
         }
     }
