@@ -30,9 +30,18 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
+                stage('Deploy to Kubernetes') {
             steps {
                 script {
+                    // Refresh kubeconfig before deploying
+                    sh """
+                        mkdir -p /var/lib/jenkins/.kube
+                        aws eks update-kubeconfig \
+                            --region us-east-1 \
+                            --name jimin-eks \
+                            --kubeconfig /var/lib/jenkins/.kube/config
+                    """
+
                     // replace image in deployment.yaml with new tag
                     sh "sed -i 's|image: ${DOCKER_IMAGE_NAME}:.*|image: ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}|' deployment.yaml"
 
