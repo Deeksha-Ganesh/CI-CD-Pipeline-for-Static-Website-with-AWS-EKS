@@ -38,14 +38,26 @@ GitHub – Source code repository.
 2. Set Up EKS
 
     Create EKS cluster using eksctl.
+               Commands:
+                      eksctl create cluster --name=<cluster-name> \
+                      --region=<region> \
+                      --zones=<zone-1>,<zone-2> \
+                      --version=<k8s-version> \
+                      --without-nodegroup
+
 
     Associate the cluster with OIDC provider.
-
+                Commands:
+                           eksctl utils associate-iam-oidc-provider --region <region> --cluster <cluster-name> --approve
     Create a node group.
+             Commands:
+                          eksctl create nodegroup --cluster <cluster-name> --name=<nodegroup-name> --node-type=<instance-type> --nodes=<number-of-nodes> --nodes-min=<min-nodes> --nodes-max=<max-nodes>
 
     Update kubeconfig for Kubernetes access.
+            Commands:
+                     aws eks update-kubeconfig --region <your-region> --name <your-cluster-name>
 
-3. Prepare Application
+4. Prepare Application
 
     Write Dockerfile for the static website.
 
@@ -53,7 +65,7 @@ GitHub – Source code repository.
 
     Push the application code to GitHub.
 
-4. Configure Jenkins
+5. Configure Jenkins
 
     Create a Jenkins user for access.
 
@@ -63,7 +75,7 @@ GitHub – Source code repository.
 
     Create a pipeline job in Jenkins.
 
-5. Run Pipeline
+6. Run Pipeline
 
     Trigger the Jenkins job to:
 
@@ -75,7 +87,9 @@ GitHub – Source code repository.
 
     Deploy to EKS.
 
-6. Access the Website
+7. Access the Website
+   kubectl get pods
+   kubectl get svc <service-name>
 
     Use the LoadBalancer URL provided by the Kubernetes service to access the website.
 <img width="1891" height="956" alt="image" src="https://github.com/user-attachments/assets/21acdc45-29e3-4609-b9ef-641760e35150" />
