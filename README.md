@@ -29,53 +29,53 @@ GitHub – Source code repository.
 ## Project Workflow
 1. Prepare Environment
 
-Launch an EC2 instance.
+    Launch an EC2 instance.
 
-Create an IAM user with required policies and configure AWS CLI.
+    Create an IAM user with required policies and configure AWS CLI.
 
-Install Jenkins, Docker, kubectl, and eksctl on the instance.
+    Install Jenkins, Docker, kubectl, and eksctl on the instance.
 
 2. Set Up EKS
 
-Create EKS cluster using eksctl.
+    Create EKS cluster using eksctl.
 
-Associate the cluster with OIDC provider.
+    Associate the cluster with OIDC provider.
 
-Create a node group.
+    Create a node group.
 
-Update kubeconfig for Kubernetes access.
+    Update kubeconfig for Kubernetes access.
 
 3. Prepare Application
 
-Write Dockerfile for the static website.
+    Write Dockerfile for the static website.
 
-Create deployment.yaml and service.yaml for Kubernetes.
+    Create deployment.yaml and service.yaml for Kubernetes.
 
-Push the application code to GitHub.
+    Push the application code to GitHub.
 
 4. Configure Jenkins
 
-Create a Jenkins user for access.
+    Create a Jenkins user for access.
 
-Add Docker Hub credentials in Jenkins.
+    Add Docker Hub credentials in Jenkins.
 
-Write a Jenkinsfile for CI/CD pipeline.
+    Write a Jenkinsfile for CI/CD pipeline.
 
-Create a pipeline job in Jenkins.
+    Create a pipeline job in Jenkins.
 
 5. Run Pipeline
 
-Trigger the Jenkins job to:
+    Trigger the Jenkins job to:
 
-Clone the GitHub repository.
+    Clone the GitHub repository.
 
-Build Docker image.
+    Build Docker image.
 
-Push image to Docker Hub.
+    Push image to Docker Hub.
 
-Deploy to EKS.
+    Deploy to EKS.
 
 6. Access the Website
 
-Use the LoadBalancer URL provided by the Kubernetes service to access the website.
+    Use the LoadBalancer URL provided by the Kubernetes service to access the website.
 <img width="1891" height="956" alt="image" src="https://github.com/user-attachments/assets/21acdc45-29e3-4609-b9ef-641760e35150" />
