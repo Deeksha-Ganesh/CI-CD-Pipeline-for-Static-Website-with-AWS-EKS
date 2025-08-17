@@ -18,7 +18,7 @@ pipeline {
                 script {
                     def IMAGE_TAG = "${env.BUILD_NUMBER}"   // unique tag = Jenkins build number
 
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'deekshaganesh', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh "docker build -t ${DOCKER_IMAGE_NAME}:${IMAGE_TAG} ."
                         sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
                         sh "docker push ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}"
