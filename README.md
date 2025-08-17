@@ -38,7 +38,8 @@ GitHub – Source code repository.
 2. Set Up EKS
 
     Create EKS cluster using eksctl.
-               Commands:
+
+   Commands:
                       eksctl create cluster --name=<cluster-name> \
                       --region=<region> \
                       --zones=<zone-1>,<zone-2> \
@@ -47,14 +48,17 @@ GitHub – Source code repository.
 
 
     Associate the cluster with OIDC provider.
-                Commands:
+
+   Commands:
                            eksctl utils associate-iam-oidc-provider --region <region> --cluster <cluster-name> --approve
     Create a node group.
-             Commands:
+
+   Commands:
                           eksctl create nodegroup --cluster <cluster-name> --name=<nodegroup-name> --node-type=<instance-type> --nodes=<number-of-nodes> --nodes-min=<min-nodes> --nodes-max=<max-nodes>
 
     Update kubeconfig for Kubernetes access.
-            Commands:
+
+   Commands:
                      aws eks update-kubeconfig --region <your-region> --name <your-cluster-name>
 
 4. Prepare Application
