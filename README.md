@@ -47,16 +47,20 @@ GitHub – Source code repository.
                       --without-nodegroup
 
 
+
     Associate the cluster with OIDC provider.
 
    Commands:
                            eksctl utils associate-iam-oidc-provider --region <region> --cluster <cluster-name> --approve
-    Create a node group.
+   
+
+   Create a node group.
 
    Commands:
                           eksctl create nodegroup --cluster <cluster-name> --name=<nodegroup-name> --node-type=<instance-type> --nodes=<number-of-nodes> --nodes-min=<min-nodes> --nodes-max=<max-nodes>
 
-    Update kubeconfig for Kubernetes access.
+
+   Update kubeconfig for Kubernetes access.
 
    Commands:
                      aws eks update-kubeconfig --region <your-region> --name <your-cluster-name>
