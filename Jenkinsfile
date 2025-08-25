@@ -16,7 +16,7 @@ pipeline {
         stage('Build & Push Docker Image') {
             steps {
                 script {
-                    def IMAGE_TAG = "${env.BUILD_NUMBER}"   // unique tag = Jenkins build number
+                    def IMAGE_TAG = "${env.BUILD_NUMBER}"
 
                     withCredentials([usernamePassword(credentialsId: 'deekshaganesh', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh "docker build -t ${DOCKER_IMAGE_NAME}:${IMAGE_TAG} ."
@@ -33,7 +33,7 @@ pipeline {
                 stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    // Refresh kubeconfig before deploying
+        
                     sh """
                         mkdir -p /var/lib/jenkins/.kube
                         aws eks update-kubeconfig \
@@ -42,10 +42,8 @@ pipeline {
                             --kubeconfig /var/lib/jenkins/.kube/config
                     """
 
-                    // replace image in deployment.yaml with new tag
                     sh "sed -i 's|image: ${DOCKER_IMAGE_NAME}:.*|image: ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}|' deployment.yaml"
 
-                    // apply manifests
                     sh 'kubectl apply -f deployment.yaml'
                     sh 'kubectl apply -f service.yaml'
                 }
